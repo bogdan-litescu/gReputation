@@ -35,7 +35,6 @@ namespace gReputation.Models
         public string Stat { get; set; }
         public string Description { get; set; }
         public int Modifier { get; set; }
-        public int Total { get; set; }
     }
 
 }
