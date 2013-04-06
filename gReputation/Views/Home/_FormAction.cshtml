@@ -1,0 +1,19 @@
+﻿@model AppAction
+
+<form action="@Url.Action("register", "auth", new { returnUrl = Request.QueryString["returnUrl"] })" method = "post" class="home-signup">
+    @Html.TextBoxFor(x => x.AppName)
+    @Html.ValidationMessageFor(x => x.AppName, null, new { @class = "error" })
+
+    @Html.TextBoxFor(x => x.UserId, new { @class = "textfield" })
+    @Html.ValidationMessageFor(x => x.UserId, null, new { @class = "error" })
+
+    @Html.TextBoxFor(x => x.Action, new { @class = "textfield" })
+    @Html.ValidationMessageFor(x => x.Action, null, new { @class = "error" })
+
+    @Html.TextAreaFor(x => x.Description, new { @class = "textfield" })
+    @Html.ValidationMessageFor(x => x.Description, null, new { @class = "error" })
+
+    <button class="btn btn-large btn-warning" type="button">
+        Push Action
+    </button>
+</form>
