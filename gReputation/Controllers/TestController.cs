@@ -6,17 +6,11 @@ using System.Web.Mvc;
 
 namespace gReputation.Controllers
 {
-    public class AdminController : Controller
+    public class TestController : Controller
     {
         public ActionResult Index()
         {
             return View();
-        }
-
-        public ActionResult Logout()
-        {
-            System.Web.Security.FormsAuthentication.SignOut();
-            return Redirect("/");
         }
     }
 }

@@ -17,10 +17,11 @@ namespace gReputation
             config.Formatters.JsonFormatter.MediaTypeMappings.Add(
                 new UriPathExtensionMapping("json", "application/json"));
 
+
             config.Routes.MapHttpRoute(
-                name: "ReputationApi",
-                routeTemplate: "{appName}/{subjectId}/{actionName}/{objectId}",
-                defaults: new { Controller = "ReputationApi", objectId = RouteParameter.Optional } //, ext = RouteParameter.Optional }
+                name: "ActivityApi",
+                routeTemplate: "{appName}/activity/{subjectId}/{actionName}/{objectId}",
+                defaults: new { Controller = "ActivityApi", objectId = RouteParameter.Optional } //, ext = RouteParameter.Optional }
             );
 
             config.Routes.MapHttpRoute(
@@ -28,7 +29,18 @@ namespace gReputation
                 routeTemplate: "{appName}/rules/{id}",
                 defaults: new { Controller = "RulesApi", id = RouteParameter.Optional } //, ext = RouteParameter.Optional }
             );
-       
+
+            config.Routes.MapHttpRoute(
+                name: "ReputationApi",
+                routeTemplate: "{appName}/{objectId}/reputation/{stat}",
+                defaults: new { Controller = "ReputationApi", stat = RouteParameter.Optional } //, ext = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "ReputationApiGlobal",
+                routeTemplate: "{objectId}/reputation/{stat}",
+                defaults: new { Controller = "ReputationApi", stat = RouteParameter.Optional } //, ext = RouteParameter.Optional }
+            );
         }
     }
 }

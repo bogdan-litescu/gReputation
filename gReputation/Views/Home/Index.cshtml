@@ -1,7 +1,61 @@
-﻿<div id="body" class="container">
-    <br />
-    <h1>Publish an action</h1>
-    <br />
-    <br />
-    @Html.Partial("_FormAction")
+﻿<div class="alert">
+    <img src="http://www.gravatar.com/avatar/948c39a0ac684746e153a8960347e7da.png" class="pull-left" style="margin-right: 16px;" />
+    <div style="margin-top: 26px;">
+        Implemented by <a href="https://twitter.com/BogdanLitescu">@@Bogdan Litescu</a>, founder of <a href="http://opentraits.com">Open Traits</a> and <a href="http://dnnsharp.com">DNN Sharp</a> at SuperHappyDevHouse Singapore 3.0.
+        <br />
+        Source code available on <a href="https://github.com/bogdan-litescu/gReputation">github</a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+
+
+<div class="hero-unit">
+
+    <h1>gReputation</h1>
+    <p>Open source, globally available, reputation system with REST Api and web UI.</p>
+
+    <div class="well">
+        <h3>Start by registering a new app</h3>
+        <form class="form-inline" method="post" action="@Url.Action("register", "home")">
+            <input type="text" class="input-large" name="AppName" placeholder="App Name" />
+            <input type="email" class="input-large" name="Email" placeholder="Email">
+            <button class="btn btn-primary">Register</button>
+            @ViewBag.Error
+        </form>
+
+    </div>
+
+</div>
+
+<div id="body" class="container">
+
+    <h3>How it works?</h3>
+    <div class="row">
+        <div class="span4">
+            <h4>Push actions via REST API</h4>
+            <p>
+                Push to <i>&lt;service address&gt;/&lt;app Name&gt;/activity/&lt;subject Id&gt;/&lt;action Name&gt;/&lt;object Id&gt;</i>.
+                In other words, "subject does something to object". There is no logical distinction between subjects and objects, they are equivalent in the system.
+            </p>
+        </div>
+        <div class="span4">
+            <h4>Map actions to Reputation Changes</h4>
+            <p>
+                Using the Admin UI, map an action to modify reputatation. 
+                This way, you decouple the reputation logic and rules from your application logic.
+                Note that the reputation is split in 3 dimensions: quality (for example based on votes by users),
+                qunatity (for example activity) and trust (good vs bad behavior).
+            </p>
+        </div>
+        <div class="span4">
+            <h4>Call API to get user reputation</h4>
+            <p>
+                The user reputation changes is built per app and it's available at <i>&lt;service address&gt;/&lt;app Name&gt;/&lt;object Id&gt;/&lt;reputation&gt;/&lt;optional stat&gt;</i>
+                But this service will compute a global reputation as well.
+                This can be retrieved from <i>&lt;service address&gt;/&lt;object Id&gt;/&lt;reputation&gt;/&lt;optional stat&gt;</i>
+            </p>
+        </div>
+    </div>
+
 </div>

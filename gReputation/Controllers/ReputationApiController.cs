@@ -12,19 +12,94 @@ namespace gReputation.Controllers
 {
     public class ReputationApiController : ApiController
     {
-        public string Get(string appName, string subjectId, string action)
+        public ReputationTotal Get(string appName, string objectId)
         //, eResponseFormat format = eResponseFormat.Json)
         {
-            //var tbl = AzureTable.Get("reputation");
-            //TableOperation insertOperation = TableOperation.Insert(new ReputationEntry(appName) {
-            //    Subject = subjectId,
-            //    Stat = "loyalty",
-            //    Object = objectId
-            //});
-            //tbl.Execute(insertOperation);
+            var tblTotal = AzureTable.Get("reputationtotals");
+            TableOperation retrieveOperation = TableOperation.Retrieve<ReputationTotal>(appName, objectId);
+            TableResult retrievedResult = tblTotal.Execute(retrieveOperation);
 
-            return "value";
+            return retrievedResult.Result as ReputationTotal;
         }
+
+        public int Get(string appName, string objectId, string stat)
+        //, eResponseFormat format = eResponseFormat.Json)
+        {
+            var tblTotal = AzureTable.Get("reputationtotals");
+            TableOperation retrieveOperation = TableOperation.Retrieve<ReputationTotal>(appName, objectId);
+            TableResult retrievedResult = tblTotal.Execute(retrieveOperation);
+
+            if (retrievedResult.Result == null)
+                return 0;
+
+            switch (stat) {
+                case "Quality":
+                    return (retrievedResult.Result as ReputationTotal).TotalQuality;
+                case "Quantity":
+                    return (retrievedResult.Result as ReputationTotal).TotalQuantity;
+                case "Trust":
+                    return (retrievedResult.Result as ReputationTotal).TotalTrust;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Let's just do the global reputation an average of local reputation 
+        /// What would be best is to normalize the reputation based on other users in each app
+        /// </summary>
+        /// <param name="objectId"></param>
+        /// <returns></returns>
+        public object Get(string objectId)
+        //, eResponseFormat format = eResponseFormat.Json)
+        {
+                var tblTotal = AzureTable.Get("reputationtotals");
+
+                TableQuery<ReputationTotal> rangeQuery = new TableQuery<ReputationTotal>().Where(
+                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, objectId));
+
+            // Loop through the results, displaying information about the entity.
+            var entries = tblTotal.ExecuteQuery(rangeQuery);
+            if (entries == null || entries.Count() == 0)
+                return null;
+
+            var toltalQuality = 0;
+            var toltalQuantity = 0;
+            var toltalTrust = 0;
+            foreach (ReputationTotal entry in entries) {
+                toltalQuality += entry.TotalQuality;
+                toltalQuantity += entry.TotalQuantity;
+                toltalTrust += entry.TotalTrust;
+            }
+
+            return new {
+                TotalQuality = toltalQuality / entries.Count(),
+                TotalQuantity = toltalQuantity / entries.Count(),
+                TotalTrust = toltalTrust / entries.Count()
+            };
+        }
+
+        //public int Get(string objectId, string stat)
+        ////, eResponseFormat format = eResponseFormat.Json)
+        //{
+        //    var tblTotal = AzureTable.Get("reputationtotals");
+        //    TableOperation retrieveOperation = TableOperation.Retrieve<ReputationTotal>(appName, objectId);
+        //    TableResult retrievedResult = tblTotal.Execute(retrieveOperation);
+
+        //    if (retrievedResult.Result == null)
+        //        return 0;
+
+        //    switch (stat) {
+        //        case "Quality":
+        //            return (retrievedResult.Result as ReputationTotal).TotalQuality;
+        //        case "Quantity":
+        //            return (retrievedResult.Result as ReputationTotal).TotalQuantity;
+        //        case "Trust":
+        //            return (retrievedResult.Result as ReputationTotal).TotalTrust;
+        //    }
+
+        //    return 0;
+        //}
 
         public string Post(string appName, string subjectId, string actionName, string objectId, [FromBody]string description)
         {
@@ -54,7 +129,6 @@ namespace gReputation.Controllers
             TableOperation retrieveOperation = TableOperation.Retrieve<ReputationTotal>(appName, objectId);
             TableResult retrievedResult = tblTotal.Execute(retrieveOperation);
 
-            // Print the phone number of the result.
             if (retrievedResult.Result != null) {
                 AddStat((retrievedResult.Result as ReputationTotal), stat, modVal);
                 tblTotal.Execute(TableOperation.Replace(retrievedResult.Result as ReputationTotal));
@@ -103,37 +177,5 @@ namespace gReputation.Controllers
             return tbl.ExecuteQuery(rangeQuery);
         }
 
-        //public string Get(string user, string appname, string stat, string format)
-        ////, eResponseFormat format = eResponseFormat.Json)
-        //{
-        //    return "value";
-        //}
-
-        //// GET api/values
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/values/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/values
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT api/values/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

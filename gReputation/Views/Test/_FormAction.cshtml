@@ -2,12 +2,17 @@
 
 <form action="#" method = "post" class="form-horizontal">
 
-    <div class="control-group">
+    <br />
+    <h4>Publish an action</h4>
+    <br />
+    <br />
+
+    @*<div class="control-group">
         <label class="control-label" for="tbAppName">App Name</label>
         <div class="controls">
             <input type="text" id="tbAppName" placeholder="App Name" value="RandomApp">
         </div>
-    </div>
+    </div>*@
 
     <div class="control-group">
         <label class="control-label" for="tbSubjectId">Subject ID</label>
@@ -18,19 +23,14 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="ddAction">Action</label>
+        <label class="control-label" for="tbAction">Action</label>
         <div class="controls">
-            <select id="ddAction">
-                <option>comment</option>
-                <option>like</option>
-                <option>voted</option>
-                <option>dosmth</option>
-            </select>
+            <input type="text" id="tbAction" placeholder="Action" value="do smth">
         </div>
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="tbObjectId">Object ID 2</label>
+        <label class="control-label" for="tbObjectId">Object ID</label>
         <div class="controls">
             <input type="text" id="tbObjectId" placeholder="Object ID" value="Object">
             The object that receives the action (for example, an article id)
@@ -60,8 +60,11 @@
             $(this).hide();
             $.ajax({
                 type: "POST",
-                url: '/' + $('#tbAppName').val() + '/' + $('#tbSubjectId').val() + '/' + $('#ddAction').val() + '/' + $('#tbObjectId').val(),
-                data: { description: $('#tbDescription').val() }
+                url: '/@User.Identity.Name/activity/' + $('#tbSubjectId').val() + '/' + $('#tbAction').val() + '/' + $('#tbObjectId').val(),
+                data: {
+                    appKey: '@Session["appKey"]',
+                    description: $('#tbDescription').val()
+                }
             }).done(function (msg) {
                 $('#btnPushAction').fadeIn();
             });

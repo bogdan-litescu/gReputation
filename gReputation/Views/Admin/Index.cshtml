@@ -21,12 +21,12 @@
                 <input type="hidden" data-ng-model="edit.RowKey" />
 
                 <h3>When to modify reputation</h3>
-                <div class="control-group">
+                @*<div class="control-group">
                     <label class="control-label" for="tbAppName">App Name</label>
                     <div class="controls">
                         <input type="text" placeholder="App Name" value="RandomApp" data-ng-model="edit.PartitionKey">
                     </div>
-                </div>
+                </div>*@
 
                 <div class="control-group">
                     <label class="control-label" for="tbAction">Action</label>
@@ -94,8 +94,8 @@
     function RuleCtrl($scope, $http, $templateCache) {
 
         $scope.defaultRule = {
-            RowKey: -1,
-            PartitionKey: 'app name',
+            RowKey: "",
+            //PartitionKey: 'app name',
             Action: 'do smth',
             Receiver: 'Subject',
             ModQuality: "0",
@@ -106,7 +106,7 @@
         $scope.rules = [];
         $http({
             method: 'GET',
-            url: '/app name/rules', // todo: configurable app name
+            url: '/@User.Identity.Name/rules', // todo: configurable app name
             cache: $templateCache
         }).success(function (data, status) {;
             $scope.rules = data;
@@ -141,7 +141,7 @@
 
             // update to server as well
             $http({
-                url: '/' + $scope.edit.PartitionKey + '/rules',
+                url: '/@User.Identity.Name/rules',
                 method: "POST",
                 data: $scope.edit,
                 dataType: "json"
@@ -166,7 +166,7 @@
 
             // update to server as well
             $http({
-                url: '/' + rule.PartitionKey + '/rules/' + rule.RowKey,
+                url: '/@User.Identity.Name/rules/' + rule.RowKey,
                 method: "DELETE",
                 dataType: "json"
             }).error(function (data, status, headers, config) {

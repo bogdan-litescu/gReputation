@@ -26,7 +26,20 @@ namespace gReputation.Controllers
 
         public Rule Post(Rule rule)
         {
-            string appName = "app name";
+            string appName = HttpContext.Current.User.Identity.Name;
+            string appKey = HttpContext.Current.Request.Params["appKey"];
+
+            var tblApps = AzureTable.Get("apps");
+            TableQuery<Rule> rangeQuery = new TableQuery<Rule>().Where(
+                TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, appName));
+
+            var apps = tblApps.ExecuteQuery(rangeQuery);
+            if (apps == null && apps.Count() == 0) {
+                throw new UnauthorizedAccessException("Access Denied.");
+            }
+
+            var app = apps.First();
+
             var tbl = AzureTable.Get("rules");
             TableOperation op = null;
 

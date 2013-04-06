@@ -1,0 +1,15 @@
+﻿@model App
+
+<div class="alert" style="margin: 100px;">
+    <form class="form-inline" method="post" action="@Url.Action("login", "home")">
+        <h3>Login</h3>
+        <input type="text" class="input-large" name="AppName" placeholder="App Name" />
+        <br />
+        <br />
+        <input type="text" class="input-large" name="AppKey" placeholder="App Key">
+        <br />
+        <br />
+        <button class="btn btn-primary">Login</button>
+        @ViewBag.Error
+    </form>
+</div>

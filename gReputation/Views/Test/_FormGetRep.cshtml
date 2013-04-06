@@ -1,0 +1,66 @@
+﻿@model AppAction
+
+<form action="#" method="post" class="form-horizontal">
+    <br />
+    <h4>Get Reputation</h4>
+    <br />
+    <br />
+   @* <div class="control-group">
+        <label class="control-label" for="tbRepAppName">App Name</label>
+        <div class="controls">
+            <input type="text" id="tbRepAppName" placeholder="App Name" value="RandomApp">
+        </div>
+    </div>*@
+
+    <div class="control-group">
+        <label class="control-label" for="tbRepObjectId">Object ID</label>
+        <div class="controls">
+            <input type="text" id="tbRepObjectId" placeholder="Object ID" value="Object">
+            The object that receives the action (for example, an article id)
+        </div>
+    </div>
+
+    @*<div class="control-group">
+        <label class="control-label" for="ddRepStat">Stat</label>
+        <div class="controls">
+            <select id="ddAction">
+                <option>Quality</option>
+                <option>Quantity</option>
+                <option>Trust</option>
+            </select>
+        </div>
+    </div>*@
+
+    <div class="control-group">
+        <div class="controls">
+            <button class="btn btn-primary" type="button" id="btnGetRep">
+                Get
+            </button>
+        </div>
+    </div>
+
+    <div class="alert" id="lblRep">
+
+    </div>
+
+</form>
+
+<script>
+
+    $(function () {
+        $('#btnGetRep').click(function () {
+            $.ajax({
+                type: "GET",
+                url: '/@User.Identity.Name/' + $('#tbRepObjectId').val() + '/reputation',
+                dataType: 'json'
+            }).done(function (data) {
+                if (data) {
+                    $('#lblRep').html('Quality: ' + data.TotalQuality + '<br/>Quantity: ' + data.TotalQuantity + '<br/>Trust: ' + data.TotalTrust);
+                } else {
+                    $('#lblRep').html("no rep");
+                }
+            });
+        });
+    });
+
+</script>

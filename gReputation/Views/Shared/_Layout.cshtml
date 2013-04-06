@@ -29,7 +29,13 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li><a href="/">Home</a></li>
-                        <li><a href="/admin">Admin</a></li>
+                        @if (HttpContext.Current.User.Identity.IsAuthenticated) {
+                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/test">Test</a></li>
+                            <li><a href="/admin/logout">Logout</a></li>
+                        } else {
+                            <li><a href="/home/login">Login</a></li>
+                        }
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
