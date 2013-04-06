@@ -21,7 +21,7 @@ namespace gReputation.Models
 
     public class ReputationEntry : TableEntity
     {
-        public ReputationEntry(string appName, string userId)
+        public ReputationEntry(string appName)
         {
             this.PartitionKey = appName;
             this.RowKey = Guid.NewGuid().ToString().Replace('-', ' ');
@@ -31,7 +31,7 @@ namespace gReputation.Models
         {
         }
 
-        public string UserId { get; set; }
+        public string Object { get; set; }
         public string Stat { get; set; }
         public string Description { get; set; }
         public int Modifier { get; set; }

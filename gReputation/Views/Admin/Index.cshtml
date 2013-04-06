@@ -1,0 +1,180 @@
+﻿<div id="body" class="container">
+
+    <h2>Rules</h2>
+    <div data-ng-controller="RuleCtrl">
+        <ul class="unstyled">
+            <li data-ng-repeat="rule in rules">
+                @*<input type="checkbox" data-ng-model="todo.done">*@
+                <a href="#" class="btn btn-info btn-mini" data-ng-click="editRule(rule)"><i class="icon-edit"></i></a>
+                <a href="#" class="btn btn-danger btn-mini" data-ng-click="deleteRule(rule)"><i class="icon-remove"></i></a>
+                <span class="">When object does action <strong>{{rule.Action}}</strong> {{rule.Receiver}} will receive 
+                    {{rule.ModQuality}} quality, {{rule.ModTrust}} trust, {{rule.ModQuantity}} quantity
+                </span>
+            </li>
+        </ul>
+
+        <a href="#" class="btn btn-link" data-ng-click="newRule()">New Rule</a>
+
+        <div class="well" id="frmRule" data-ng-show="edit">
+            <form class="form-horizontal" data-ng-submit="updateRule()">
+
+                <input type="hidden" data-ng-model="edit.RowKey" />
+
+                <h3>When to modify reputation</h3>
+                <div class="control-group">
+                    <label class="control-label" for="tbAppName">App Name</label>
+                    <div class="controls">
+                        <input type="text" placeholder="App Name" value="RandomApp" data-ng-model="edit.PartitionKey">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="tbAction">Action</label>
+                    <div class="controls">
+                        <input type="text" placeholder="Action" value="Action" data-ng-model="edit.Action">
+                        The action that triggers this rule
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="ddAction">Who receives reputation?</label>
+                    <div class="controls">
+                        <select data-ng-model="edit.Receiver">
+                            <option value="Subject">Subject of the action</option>
+                            <option value="Object">Object of the action</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3>Modifiers</h3>
+                <div style="margin: 16px 100px;">
+                    <div class="control-group">
+                        <select class="input-small" data-ng-model="edit.ModQuality">
+                            @for (var i = 10; i >= -10; i--) {
+                                <option @Html.Raw(i == 0 ? "selected=\"select\"" : "")>@(i > 0 ? "+" : "")@i</option>
+                            }
+                        </select>
+                        <strong>Quality</strong> (how good is the content this object generates)
+                    </div>
+                    <div class="control-group">
+                        <select class="input-small" data-ng-model="edit.ModQuantity">
+                            @for (var i = 10; i >= -10; i--) {
+                                <option @Html.Raw(i == 0 ? "selected=\"select\"" : "")>@(i > 0 ? "+" : "")@i</option>
+                            }
+                        </select>
+                        <strong>Quantity</strong> (how much activity did this object generate)
+                    </div>
+                    <div class="control-group">
+                        <select class="input-small" data-ng-model="edit.ModTrust">
+                            @for (var i = 10; i >= -10; i--) {
+                                <option @Html.Raw(i == 0 ? "selected=\"select\"" : "")>@(i > 0 ? "+" : "")@i</option>
+                            }
+                        </select>
+                        <strong>Trust</strong> (Good vs. Bad Behavior)
+                    </div>
+                </div>
+
+                <br />
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary" type="submit">
+                            Save
+                        </button>
+                        <button class="btn btn-link" data-ng-click="cancelUpdate()" type="button">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function RuleCtrl($scope, $http, $templateCache) {
+
+        $scope.defaultRule = {
+            RowKey: -1,
+            PartitionKey: 'app name',
+            Action: 'do smth',
+            Receiver: 'Subject',
+            ModQuality: "0",
+            ModQuantity: "0",
+            ModTrust: "0"
+        };
+
+        $scope.rules = [];
+        $http({
+            method: 'GET',
+            url: '/app name/rules', // todo: configurable app name
+            cache: $templateCache
+        }).success(function (data, status) {;
+            $scope.rules = data;
+            console.log(data);
+        });
+
+        $scope.editRule = function (rule) {
+            $scope.edit = $.extend({}, rule);
+        };
+
+        $scope.newRule = function (rule) {
+            $scope.edit = $.extend({}, $scope.defaultRule);
+        };
+
+        $scope.cancelUpdate = function () {
+            $scope.edit = null;
+        };
+
+        $scope.updateRule = function () {
+            if ($scope.edit.RowKey) {
+                for (var i = 0; i < $scope.rules.length; i++) {
+                    if ($scope.rules[i].RowKey == $scope.edit.RowKey) {
+                        $scope.rules[i] = $scope.edit;
+                        break;
+                    }
+                }
+            } else {
+                $scope.rules.push($scope.edit);
+            }
+
+            var editing = $scope.edit;
+
+            // update to server as well
+            $http({
+                url: '/' + $scope.edit.PartitionKey + '/rules',
+                method: "POST",
+                data: $scope.edit,
+                dataType: "json"
+            }).error(function (data, status, headers, config) {
+                alert(data);
+                // refresh page to avoid issues
+                window.location.reload();
+            }).success(function(data, status, headers, config) {
+                editing = data;
+            })
+
+            // reset edit
+            $scope.edit = null;
+        };
+
+        $scope.deleteRule = function (rule) {
+            if (!rule.RowKey || !confirm('Hmmm.. are you sure?'))
+                return;
+
+            // remove it from collection
+            $scope.rules.splice(rule, 1);
+
+            // update to server as well
+            $http({
+                url: '/' + rule.PartitionKey + '/rules/' + rule.RowKey,
+                method: "DELETE",
+                dataType: "json"
+            }).error(function (data, status, headers, config) {
+                alert(data);
+                // refresh page to avoid issues
+               // window.location.reload();
+            });
+        };
+    }
+
+</script>

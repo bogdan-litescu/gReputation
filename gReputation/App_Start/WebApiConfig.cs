@@ -19,10 +19,16 @@ namespace gReputation
 
             config.Routes.MapHttpRoute(
                 name: "ReputationApi",
-                routeTemplate: "{appName}/{userId}/{verb}/{objectId}",
+                routeTemplate: "{appName}/{subjectId}/{verb}/{objectId}",
                 defaults: new { Controller = "ReputationApi", objectId = RouteParameter.Optional } //, ext = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "RulesApi",
+                routeTemplate: "{appName}/rules/{id}",
+                defaults: new { Controller = "RulesApi", id = RouteParameter.Optional } //, ext = RouteParameter.Optional }
+            );
+       
         }
     }
 }

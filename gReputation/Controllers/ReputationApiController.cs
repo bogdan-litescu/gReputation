@@ -12,24 +12,28 @@ namespace gReputation.Controllers
 {
     public class ReputationApiController : ApiController
     {
-        public string Get(string appName, string userId, string action, string objectId)
+        public string Get(string appName, string subjectId, string action)
             //, eResponseFormat format = eResponseFormat.Json)
         {
-            var tbl = AzureTable.Get("reputation");
-            TableOperation insertOperation = TableOperation.Insert(new ReputationEntry(appName, userId) {
-                Stat = "loyalty"
-            });
-            tbl.Execute(insertOperation);
+            //var tbl = AzureTable.Get("reputation");
+            //TableOperation insertOperation = TableOperation.Insert(new ReputationEntry(appName) {
+            //    Subject = subjectId,
+            //    Stat = "loyalty",
+            //    Object = objectId
+            //});
+            //tbl.Execute(insertOperation);
 
             return "value";
         }
 
-        public string Post(string appName, string userId, string verb, string objectId, [FromBody]string description)
+        public string Post(string appName, string subjectId, string verb, string objectId, [FromBody]string description)
         {
             var tbl = AzureTable.Get("reputation");
-            TableOperation insertOperation = TableOperation.Insert(new ReputationEntry(appName, userId) {
+            TableOperation insertOperation = TableOperation.Insert(new ReputationEntry(appName) {
+                Object = subjectId,
                 Stat = "loyalty", // TODO: take this from some action => modifiers rules
                 Description = description ?? "",
+                // Object = objectId,
                 Modifier = 1, // TODO: take this from some action => modifiers rules
                 Total = 1 // TODO: total = prev total +/- modifier
             });

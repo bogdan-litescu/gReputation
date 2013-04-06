@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html data-ng-app="">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -24,12 +24,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">gRepuation</a>
+                <a class="brand" href="/">gReputation</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/admin">Admin</a></li>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
@@ -49,7 +48,8 @@
     @*@Scripts.Render("~/bundles/jquery")*@
 
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>

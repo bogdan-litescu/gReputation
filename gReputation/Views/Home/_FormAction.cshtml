@@ -10,9 +10,10 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="tbUserId">User ID</label>
+        <label class="control-label" for="tbSubjectId">Subject ID</label>
         <div class="controls">
-            <input type="text" id="tbUserId" placeholder="User ID" value="User1">
+            <input type="text" id="tbSubjectId" placeholder="Subject ID" value="Subject">
+            The object that performs the action (for example, user id)
         </div>
     </div>
 
@@ -29,9 +30,10 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="tbObjectId">Object ID</label>
+        <label class="control-label" for="tbObjectId">Object ID 2</label>
         <div class="controls">
-            <input type="text" id="tbObjectId" placeholder="Object ID" value="Object1">
+            <input type="text" id="tbObjectId" placeholder="Object ID" value="Object">
+            The object that receives the action (for example, an article id)
         </div>
     </div>
 
@@ -55,16 +57,15 @@
 
     $(function() {
         $('#btnPushAction').click(function () {
+            $(this).hide();
             $.ajax({
                 type: "POST",
-                url: '/' + $('#tbAppName').val() + '/' + $('#tbUserId').val() + '/' + $('#ddAction').val() + '/' + $('#tbObjectId').val(),
+                url: '/' + $('#tbAppName').val() + '/' + $('#tbSubjectId').val() + '/' + $('#ddAction').val() + '/' + $('#tbObjectId').val(),
                 data: { description: $('#tbDescription').val() }
             }).done(function (msg) {
-                alert("Data Saved: " + msg);
+                $('#btnPushAction').fadeIn();
             });
         });
     });
 
 </script>
-
-
