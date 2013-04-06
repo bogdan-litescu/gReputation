@@ -1,19 +1,70 @@
 ﻿@model AppAction
 
-<form action="@Url.Action("register", "auth", new { returnUrl = Request.QueryString["returnUrl"] })" method = "post" class="home-signup">
-    @Html.TextBoxFor(x => x.AppName)
-    @Html.ValidationMessageFor(x => x.AppName, null, new { @class = "error" })
+<form action="#" method = "post" class="form-horizontal">
 
-    @Html.TextBoxFor(x => x.UserId, new { @class = "textfield" })
-    @Html.ValidationMessageFor(x => x.UserId, null, new { @class = "error" })
+    <div class="control-group">
+        <label class="control-label" for="tbAppName">App Name</label>
+        <div class="controls">
+            <input type="text" id="tbAppName" placeholder="App Name" value="RandomApp">
+        </div>
+    </div>
 
-    @Html.TextBoxFor(x => x.Action, new { @class = "textfield" })
-    @Html.ValidationMessageFor(x => x.Action, null, new { @class = "error" })
+    <div class="control-group">
+        <label class="control-label" for="tbUserId">User ID</label>
+        <div class="controls">
+            <input type="text" id="tbUserId" placeholder="User ID" value="User1">
+        </div>
+    </div>
 
-    @Html.TextAreaFor(x => x.Description, new { @class = "textfield" })
-    @Html.ValidationMessageFor(x => x.Description, null, new { @class = "error" })
+    <div class="control-group">
+        <label class="control-label" for="ddAction">Action</label>
+        <div class="controls">
+            <select id="ddAction">
+                <option>comment</option>
+                <option>like</option>
+                <option>voted</option>
+                <option>dosmth</option>
+            </select>
+        </div>
+    </div>
 
-    <button class="btn btn-large btn-warning" type="button">
-        Push Action
-    </button>
+    <div class="control-group">
+        <label class="control-label" for="tbObjectId">Object ID</label>
+        <div class="controls">
+            <input type="text" id="tbObjectId" placeholder="Object ID" value="Object1">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="tbDescription">Description</label>
+        <div class="controls">
+            <textarea id="tbDescription" placeholder="Description"></textarea>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button class="btn btn-primary" type="button" id ="btnPushAction">
+                Publish Action
+            </button>
+        </div>
+    </div>
 </form>
+
+<script>
+
+    $(function() {
+        $('#btnPushAction').click(function () {
+            $.ajax({
+                type: "POST",
+                url: '/' + $('#tbAppName').val() + '/' + $('#tbUserId').val() + '/' + $('#ddAction').val() + '/' + $('#tbObjectId').val(),
+                data: { description: $('#tbDescription').val() }
+            }).done(function (msg) {
+                alert("Data Saved: " + msg);
+            });
+        });
+    });
+
+</script>
+
+

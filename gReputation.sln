@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "gReputationAzureApp", "gReputationAzureApp\gReputationAzureApp.ccproj", "{238F2AF6-7D24-4044-96AB-246E69DAF757}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gReputation", "gReputation\gReputation.csproj", "{4AA65C2B-15BE-4C0E-820B-70B5D8139FD9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{238F2AF6-7D24-4044-96AB-246E69DAF757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238F2AF6-7D24-4044-96AB-246E69DAF757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238F2AF6-7D24-4044-96AB-246E69DAF757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238F2AF6-7D24-4044-96AB-246E69DAF757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA65C2B-15BE-4C0E-820B-70B5D8139FD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA65C2B-15BE-4C0E-820B-70B5D8139FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA65C2B-15BE-4C0E-820B-70B5D8139FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA65C2B-15BE-4C0E-820B-70B5D8139FD9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

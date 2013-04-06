@@ -24,12 +24,12 @@ namespace gReputation.Controllers
             return "value";
         }
 
-        public string Post(string appName, string userId, string action, string objectId, [FromBody]string description)
+        public string Post(string appName, string userId, string verb, string objectId, [FromBody]string description)
         {
             var tbl = AzureTable.Get("reputation");
             TableOperation insertOperation = TableOperation.Insert(new ReputationEntry(appName, userId) {
                 Stat = "loyalty", // TODO: take this from some action => modifiers rules
-                Description = description,
+                Description = description ?? "",
                 Modifier = 1, // TODO: take this from some action => modifiers rules
                 Total = 1 // TODO: total = prev total +/- modifier
             });

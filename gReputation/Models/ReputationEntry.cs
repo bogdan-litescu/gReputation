@@ -24,13 +24,14 @@ namespace gReputation.Models
         public ReputationEntry(string appName, string userId)
         {
             this.PartitionKey = appName;
-            this.RowKey = userId;
+            this.RowKey = Guid.NewGuid().ToString().Replace('-', ' ');
         }
 
         public ReputationEntry() 
         {
         }
 
+        public string UserId { get; set; }
         public string Stat { get; set; }
         public string Description { get; set; }
         public int Modifier { get; set; }
