@@ -2,6 +2,11 @@
 
     <h2>Rules</h2>
     <div data-ng-controller="RuleCtrl">
+
+        <div data-ng-show="!loaded">
+            Loading rules... Please wait...
+        </div>
+
         <ul class="unstyled rules">
             <li data-ng-repeat="rule in rules">
                 @*<input type="checkbox" data-ng-model="todo.done">*@
@@ -110,6 +115,7 @@
             cache: $templateCache
         }).success(function (data, status) {;
             $scope.rules = data;
+            $scope.loaded = true;
             console.log(data);
         });
 
@@ -125,11 +131,15 @@
             $scope.edit = null;
         };
 
+        // assign some id to new 
+        var g_tempRowKey = 0;
+
         $scope.updateRule = function () {
+
             if ($scope.edit.RowKey) {
                 for (var i = 0; i < $scope.rules.length; i++) {
                     if ($scope.rules[i].RowKey == $scope.edit.RowKey) {
-                        $scope.rules[i] = $scope.edit;
+                         $scope.rules[i] = $scope.edit;
                         break;
                     }
                 }
@@ -137,7 +147,7 @@
                 $scope.rules.push($scope.edit);
             }
 
-            var editing = $scope.edit;
+            var rowKey = $scope.edit.RowKey;
 
             // update to server as well
             $http({
@@ -148,9 +158,12 @@
             }).error(function (data, status, headers, config) {
                 alert(data);
                 // refresh page to avoid issues
-                window.location.reload();
-            }).success(function(data, status, headers, config) {
-                editing = data;
+                //window.location.reload();
+            }).success(function (data, status, headers, config) {
+                console.log(data);
+                if (!rowKey) {
+                    $scope.rules[$scope.rules.length-1] = data;
+                }
             })
 
             // reset edit
@@ -162,7 +175,7 @@
                 return;
 
             // remove it from collection
-            $scope.rules.splice(rule, 1);
+            $scope.rules.splice($scope.rules.indexOf(rule), 1);
 
             // update to server as well
             $http({

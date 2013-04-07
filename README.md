@@ -1,6 +1,10 @@
 gReputation
 ===========
 
+Implemented at SuperHappyDevHouse Singapore 3.0, mostly as research on our reputation system for [OpenTraits](http://opentraits.com).
+The service in implemented in Asp.NET MVC4 (C#) to be hosted in the Azure Cloud.
+The UI is built with jQuery, Twitter Boostrap and AngularJs.
+
 App is live at [greputation.cloudapp.net](http://greputation.cloudapp.net/).
 
 Usage instructions:

@@ -8,11 +8,13 @@ namespace gReputation.Controllers
 {
     public class AdminController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public ActionResult Logout()
         {
             System.Web.Security.FormsAuthentication.SignOut();

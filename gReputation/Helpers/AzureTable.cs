@@ -13,8 +13,14 @@ namespace gReputation.Helpers
         public static CloudTable Get(string name)
         {
             // Retrieve the storage account from the connection string.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudStorageAccount storageAccount;
+            try {
+                storageAccount = CloudStorageAccount.Parse(
+                   CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            } catch (Exception ex) {
+                // dirty hack
+                storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
+            }
 
             //CloudStorageAccount storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
 

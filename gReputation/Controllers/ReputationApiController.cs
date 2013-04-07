@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace gReputation.Controllers
@@ -15,6 +16,8 @@ namespace gReputation.Controllers
         public ReputationTotal Get(string appName, string objectId)
         //, eResponseFormat format = eResponseFormat.Json)
         {
+            HttpContext.Current.Response.Cache.SetNoStore();
+
             var tblTotal = AzureTable.Get("reputationtotals");
             TableOperation retrieveOperation = TableOperation.Retrieve<ReputationTotal>(appName, objectId);
             TableResult retrievedResult = tblTotal.Execute(retrieveOperation);
@@ -25,6 +28,8 @@ namespace gReputation.Controllers
         public int Get(string appName, string objectId, string stat)
         //, eResponseFormat format = eResponseFormat.Json)
         {
+            HttpContext.Current.Response.Cache.SetNoStore();
+
             var tblTotal = AzureTable.Get("reputationtotals");
             TableOperation retrieveOperation = TableOperation.Retrieve<ReputationTotal>(appName, objectId);
             TableResult retrievedResult = tblTotal.Execute(retrieveOperation);
@@ -53,7 +58,9 @@ namespace gReputation.Controllers
         public object Get(string objectId)
         //, eResponseFormat format = eResponseFormat.Json)
         {
-                var tblTotal = AzureTable.Get("reputationtotals");
+            HttpContext.Current.Response.Cache.SetNoStore();
+
+            var tblTotal = AzureTable.Get("reputationtotals");
 
                 TableQuery<ReputationTotal> rangeQuery = new TableQuery<ReputationTotal>().Where(
                     TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, objectId));
@@ -165,6 +172,7 @@ namespace gReputation.Controllers
 
         IEnumerable<Rule> GetAllRules(string appName, string actionName)
         {
+
             var tbl = AzureTable.Get("rules");
 
             // Create the table query.

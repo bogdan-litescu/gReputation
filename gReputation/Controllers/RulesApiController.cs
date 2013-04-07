@@ -15,6 +15,8 @@ namespace gReputation.Controllers
     {
         public IEnumerable<Rule> Get(string appName)
         {
+            HttpContext.Current.Response.Cache.SetNoStore();
+
             var tbl = AzureTable.Get("rules");
 
             // Create the table query.

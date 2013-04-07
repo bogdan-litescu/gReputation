@@ -8,6 +8,7 @@ namespace gReputation.Controllers
 {
     public class TestController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             return View();

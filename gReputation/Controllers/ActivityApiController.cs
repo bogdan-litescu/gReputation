@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace gReputation.Controllers
@@ -15,7 +16,7 @@ namespace gReputation.Controllers
         public string Get(string appName, string objectId, string actionName)
         //, eResponseFormat format = eResponseFormat.Json)
         {
-            
+            HttpContext.Current.Response.Cache.SetNoStore();
 
             return "value";
         }
@@ -97,37 +98,5 @@ namespace gReputation.Controllers
             return tbl.ExecuteQuery(rangeQuery);
         }
 
-        //public string Get(string user, string appname, string stat, string format)
-        ////, eResponseFormat format = eResponseFormat.Json)
-        //{
-        //    return "value";
-        //}
-
-        //// GET api/values
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/values/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/values
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT api/values/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
