@@ -38,7 +38,7 @@ namespace gReputation.Controllers
                 throw new UnauthorizedAccessException("Access Denied.");
             }
 
-            var app = apps.First();
+            var app = apps.FirstOrDefault();
 
             var tbl = AzureTable.Get("rules");
             TableOperation op = null;

@@ -65,7 +65,7 @@ namespace gReputation.Controllers
                 return View("Index");
             }
 
-            var app = apps.First();
+            var app = apps.FirstOrDefault();
             System.Web.Security.FormsAuthentication.SetAuthCookie(app.PartitionKey, true);
             Session["appKey"] = app.RowKey;
 
